@@ -17,6 +17,7 @@ function setup(){    //used to set up initial settings
 
     img.filter(BLUR,12)
     noLoop() 
+    
 }
 
 function draw(){   // used to update the canvas and handle animations
@@ -32,10 +33,10 @@ function draw(){   // used to update the canvas and handle animations
 
     push()
     if(amp > 200){
-        rotate(random(-0.5,0.5))  //rotate slightly with bass kick
+        rotate(random(-1,1))  //rotate slightly with bass kick
     }
     
-    image(img, 0 ,0 , width+100, height+100)   //draw the bg image
+    image(img, 0 ,0 , width+200, height+200)   //draw the bg image
     pop()
 
     var alpha = map(amp, 0, 255, 180, 150)
@@ -45,7 +46,7 @@ function draw(){   // used to update the canvas and handle animations
 
     stroke(255)
     strokeWeight(3)
-    noFill()    
+    //noFill()    
 
     var wave = fft.waveform()
     //RIGHT HALF AND LEFT HALF USING LOOP 
@@ -54,7 +55,7 @@ function draw(){   // used to update the canvas and handle animations
     for(var i = 0; i <= 180; i +=0.5 ){
         var index = floor(map(i, 0, 180, 0, wave.length - 1))
         
-        var r = map(wave[index], -1, 1, 150, 350)  //radius
+        var r = map(wave[index], -1, 1, 150, 200)  //radius    //change for larger or smaller circle
         
         var x = r * sin(i) * t  //multiply t to get negative and postive
         var y = r * cos(i)
@@ -92,7 +93,7 @@ function mouseClicked(){  //behaviors when the mouse is clicked.
 //particle
 class Particle{
     constructor(){
-        this.pos = p5.Vector.random2D().mult(250) //place particle randomly
+        this.pos = p5.Vector.random2D().mult(175) //place particle randomly  //change value for radius of particles
         this.vel = createVector(0,0)
         this.acc = this.pos.copy().mult(random(0.0001, 0.000010))
         this.w = random(3,5)
@@ -101,12 +102,19 @@ class Particle{
     update(cond){
         this.vel.add(this.acc)
         this.pos.add(this.vel)
-        if(cond)   //if condition true then add more velocity the particel(in simple with bass kick hits)
-        {
-            this.pos.add(this.vel)
-            this.pos.add(this.vel)
-            this.pos.add(this.vel)
+        
+        if (cond) {
+            var bassImpact = map(amp, 200, 255, 0, 0.5); // Tweak the range of amp values and the impact factor as needed
+            this.vel.mult(1 + bassImpact);
         }
+
+        // if(cond)   //if condition true then add more velocity the particel(in simple with bass kick hits)
+        // {
+        //     this.pos.add(this.vel)
+        //     this.pos.add(this.vel)
+        //     this.pos.add(this.vel)
+        // }
+
     }
     edges(){
         if(this.pos.x < -width / 2 || this.pos.x > width / 2 || this.pos.y < -height /2 || this.pos.y > height / 2){
