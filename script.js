@@ -1,31 +1,53 @@
 var song
+var img
 var fft 
 var particles = []
 
 function preload(){    // used to load external assets
     song = loadSound('./song/techno.mp3');
+    img = loadImage('./img/bg.jpg')
 }
 function setup(){    //used to set up initial settings
     //put setup code 
     createCanvas(windowWidth-19.5, windowHeight-19.5);
     angleMode(DEGREES)
-    fft = new p5.FFT()
+    imageMode(CENTER)
+    rectMode(CENTER)
+    fft = new p5.FFT(0.3)
+
+    img.filter(BLUR,12)
+    noLoop() 
 }
 
 function draw(){   // used to update the canvas and handle animations
     //put drawing code here
     background(0)
-    stroke(255)
-    strokeWeight(3)
-    noFill()
+    
 
 
     translate(width / 2, height / 2)   //translate to get to the center
+    
     fft.analyze()
     amp = fft.getEnergy(20,200)
+
+    push()
+    if(amp > 200){
+        rotate(random(-0.5,0.5))  //rotate slightly with bass kick
+    }
+    
+    image(img, 0 ,0 , width+100, height+100)   //draw the bg image
+    pop()
+
+    var alpha = map(amp, 0, 255, 180, 150)
+    fill(0, alpha)
+    noStroke()
+    rect(0, 0, width, height)
+
+    stroke(255)
+    strokeWeight(3)
+    noFill()    
+
     var wave = fft.waveform()
-
-
     //RIGHT HALF AND LEFT HALF USING LOOP 
     for(var t = -1; t <= 1; t += 2){
     beginShape()
