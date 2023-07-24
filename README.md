@@ -1,1 +1,2 @@
-Music Visualizer 2023 By Diggaj
+Welcome to my Music Visualizer project, where it combine music and art to create a captivating experience! The visualizer uses p5.js, a cool library, to make music come alive with awesome visuals that move and change with the beat.
+p5.js is a JavaScript library that makes it easy for artists, designers, and developers to create interactive graphics, animations, and visual experiences on the web. It was inspired by the Processing programming language and aims to provide a simple yet powerful platform for creative coding.
